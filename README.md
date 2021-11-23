@@ -1,4 +1,4 @@
-# Dummy Token Manager
+# Dummy Token UI
 
 A simple UI for a [Dummy Token](https://github.com/decentraland/dummy-token). This frontend allows the user to connect their wallet and see their address. It is built using `react` + `redux` + `redux-saga`.
 
