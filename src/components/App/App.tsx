@@ -5,10 +5,17 @@ import {
   Navbar,
   Page,
 } from 'decentraland-ui'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from 'react-router-dom'
+
 import { Props } from './App.types'
+import { WalletDashboard } from '../WalletDashboard'
+
 import './App.css'
 
-import { WalletDashboard } from '../WalletDashboard'
 
 const App: React.FC<Props> = ({
   address,
@@ -23,14 +30,21 @@ const App: React.FC<Props> = ({
       <Navbar />
       <Page className="App">
         <Center>
-          <WalletDashboard
-            address={address}
-            isConnected={isConnected}
-            onConnect={onConnect}
-            isConnecting={isConnecting}
-            balance={balance}
-            error={error}
-          />
+          <Router>
+            <Routes>
+            <Route path='/transfer' element={<p>transfeh hih</p>} />
+              <Route path='/' element={
+                <WalletDashboard
+                  address={address}
+                  isConnected={isConnected}
+                  onConnect={onConnect}
+                  isConnecting={isConnecting}
+                  balance={balance}
+                  error={error}
+                />
+              }/>
+            </Routes>
+          </Router>
         </Center>
       </Page>
       <Footer />
