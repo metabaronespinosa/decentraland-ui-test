@@ -2,9 +2,11 @@ import { AnyAction } from 'redux'
 import {
   ConnectWalletFailureAction,
   ConnectWalletSuccessAction,
+  GetTokenBalanceSuccessAction,
   CONNECT_WALLET_FAILURE,
   CONNECT_WALLET_REQUEST,
   CONNECT_WALLET_SUCCESS,
+  GET_TOKEN_BALANCE_SUCCESS
 } from './actions'
 import { WalletState } from './types'
 
@@ -12,6 +14,7 @@ const INITIAL_STATE: WalletState = {
   address: null,
   isConnecting: false,
   error: null,
+  balance: null
 }
 
 export function walletReducer(
@@ -26,6 +29,7 @@ export function walletReducer(
         error: null,
       }
     }
+
     case CONNECT_WALLET_SUCCESS: {
       const { address } =
         action.payload as ConnectWalletSuccessAction['payload']
@@ -43,6 +47,15 @@ export function walletReducer(
         ...state,
         isConnecting: false,
         error,
+      }
+    }
+
+    case GET_TOKEN_BALANCE_SUCCESS: {
+      const { balance } =
+        action.payload as GetTokenBalanceSuccessAction['payload']
+      return {
+        ...state,
+        balance
       }
     }
 

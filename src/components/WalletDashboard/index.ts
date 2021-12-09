@@ -1,3 +1,3 @@
-import WalletDashboard from './WalletDashboard.container'
+import WalletDashboard from './WalletDashboard'
 
 export { WalletDashboard }

@@ -5,6 +5,7 @@ import {
   getError,
   isConnected,
   isConnecting,
+  getBalance
 } from '../../modules/wallet/selectors'
 import { RootState } from '../../modules/types'
 import { MapDispatch, MapDispatchProps, MapStateProps } from './App.types'
@@ -14,6 +15,7 @@ const mapState = (state: RootState): MapStateProps => ({
   address: getAddress(state),
   isConnected: isConnected(state),
   isConnecting: isConnecting(state),
+  balance: getBalance(state),
   error: getError(state),
 })
 

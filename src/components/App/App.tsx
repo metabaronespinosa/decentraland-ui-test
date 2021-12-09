@@ -15,6 +15,7 @@ const App: React.FC<Props> = ({
   isConnected,
   onConnect,
   isConnecting,
+  balance,
   error
 }) => {
   return (
@@ -27,6 +28,7 @@ const App: React.FC<Props> = ({
             isConnected={isConnected}
             onConnect={onConnect}
             isConnecting={isConnecting}
+            balance={balance}
             error={error}
           />
         </Center>
