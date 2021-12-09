@@ -1,0 +1,10 @@
+
+.modal-header {
+  text-align: center;
+}
+
+.modal-subtitle {
+  text-align: center;
+  margin-top: 0px !important;
+  color: gray;
+}

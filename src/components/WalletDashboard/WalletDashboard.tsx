@@ -21,25 +21,25 @@ const WalletDashboard = ({
   return <>
     {!isConnected ? (
     <>
-        <Button primary onClick={onConnect} loading={isConnecting}>
+      <Button primary onClick={onConnect} loading={isConnecting}>
         Connect
-        </Button>
-        {error ? <p className="error">{error}</p> : null}
+      </Button>
+      {error ? <p className="error">{error}</p> : null}
     </>
     ) : (
     <Card>
-        <Header>Wallet</Header>
-        <p>
-          <strong>Address:</strong>&nbsp;
-          {maskWalletAddress(address)}
-        </p>
-        <p>
-          <strong>Balance:</strong>&nbsp;
-          {balance}
-          <Link to='/transfer'>
-            <Button basic>Transfer</Button>
-          </Link>
-        </p>
+      <Header>Wallet</Header>
+      <p>
+        <strong>Address:</strong>&nbsp;
+        {maskWalletAddress(address)}
+      </p>
+      <p>
+        <strong>Balance:</strong>&nbsp;
+        {balance}
+        <Link to='/transfer'>
+          <Button basic>Transfer</Button>
+        </Link>
+      </p>
     </Card>
     )}
   </>

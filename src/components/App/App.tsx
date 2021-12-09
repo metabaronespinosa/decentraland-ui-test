@@ -13,6 +13,7 @@ import {
 
 import { Props } from './App.types'
 import { WalletDashboard } from '../WalletDashboard'
+import { TransferForm } from '../TransferForm'
 
 import './App.css'
 
@@ -32,7 +33,7 @@ const App: React.FC<Props> = ({
         <Center>
           <Router>
             <Routes>
-            <Route path='/transfer' element={<p>transfeh hih</p>} />
+            <Route path='/transfer' element={<TransferForm />} />
               <Route path='/' element={
                 <WalletDashboard
                   address={address}
