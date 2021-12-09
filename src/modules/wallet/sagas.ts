@@ -1,5 +1,10 @@
 import { ethers, BigNumber } from 'ethers'
-import { call, put, takeEvery } from 'redux-saga/effects'
+import {
+  call,
+  put,
+  takeEvery,
+  select
+} from 'redux-saga/effects'
 import { Action } from 'redux'
 import {
   connectWalletFailure,
@@ -7,9 +12,12 @@ import {
   getTokenBalanceSuccess,
   getTokenBalanceFailure,
   CONNECT_WALLET_REQUEST,
-  CONNECT_WALLET_SUCCESS
+  CONNECT_WALLET_SUCCESS,
+  SEND_TRANSFER_REQUEST,
+  SendTransferRequest
 } from './actions'
 import { WindowWithEthereum } from './types'
+import { getAddress } from './selectors'
 
 interface HandleGetTokenBalanceAction extends Action, ITask { type: typeof CONNECT_WALLET_SUCCESS }
 
@@ -42,6 +50,22 @@ export const TOKEN_ABI = [
 export function* walletSaga() {
   yield takeEvery(CONNECT_WALLET_REQUEST, handleConnectWalletRequest)
   yield takeEvery<HandleGetTokenBalanceAction>(CONNECT_WALLET_SUCCESS, handleGetTokenBalance)
+  yield takeEvery<SendTransferRequest>(SEND_TRANSFER_REQUEST, handleSendTransferRequest)
+}
+
+function* handleSendTransferRequest(action: SendTransferRequest) {
+  try {
+    const provider = new ethers.providers.Web3Provider(
+      windowWithEthereum.ethereum
+    )
+    const token = new ethers.Contract(TOKEN_ADDRESS, TOKEN_ABI, provider)
+    const address: string = yield select(getAddress)
+    const balance: BigNumber = yield call(token.transfer, address, action.payload.receiverAddress)
+
+    yield put(getTokenBalanceSuccess(balance.toString()))
+  } catch (error: any) {
+    yield put(getTokenBalanceFailure(error))
+  }
 }
 
 function* handleGetTokenBalance(action: HandleGetTokenBalanceAction) {
