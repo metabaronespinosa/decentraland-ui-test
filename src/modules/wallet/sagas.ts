@@ -1,11 +1,21 @@
-import { ethers } from 'ethers'
+import { ethers, BigNumber } from 'ethers'
 import { call, put, takeEvery } from 'redux-saga/effects'
+import { Action } from 'redux'
 import {
   connectWalletFailure,
   connectWalletSuccess,
+  getTokenBalanceSuccess,
+  getTokenBalanceFailure,
   CONNECT_WALLET_REQUEST,
+  CONNECT_WALLET_SUCCESS
 } from './actions'
 import { WindowWithEthereum } from './types'
+
+interface HandleGetTokenBalanceAction extends Action, ITask { type: typeof CONNECT_WALLET_SUCCESS }
+
+interface ITask {
+  payload: { address: string }
+}
 
 // The regular `window` object with `ethereum` injected by MetaMask
 const windowWithEthereum = window as unknown as WindowWithEthereum
@@ -31,6 +41,21 @@ export const TOKEN_ABI = [
 
 export function* walletSaga() {
   yield takeEvery(CONNECT_WALLET_REQUEST, handleConnectWalletRequest)
+  yield takeEvery<HandleGetTokenBalanceAction>(CONNECT_WALLET_SUCCESS, handleGetTokenBalance)
+}
+
+function* handleGetTokenBalance(action: HandleGetTokenBalanceAction) {
+  try {
+    const provider = new ethers.providers.Web3Provider(
+      windowWithEthereum.ethereum
+    )
+    const token = new ethers.Contract(TOKEN_ADDRESS, TOKEN_ABI, provider)
+    const balance: BigNumber = yield call(token.balanceOf, action.payload.address)
+
+    yield put(getTokenBalanceSuccess(balance.toString()))
+  } catch (error: any) {
+    yield put(getTokenBalanceFailure(error))
+  }
 }
 
 function* handleConnectWalletRequest() {
