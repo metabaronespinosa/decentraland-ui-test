@@ -2,8 +2,7 @@ import { ethers, BigNumber } from 'ethers'
 import {
   call,
   put,
-  takeEvery,
-  select
+  takeEvery
 } from 'redux-saga/effects'
 import { Action } from 'redux'
 import {
@@ -11,13 +10,14 @@ import {
   connectWalletSuccess,
   getTokenBalanceSuccess,
   getTokenBalanceFailure,
+  sendTransferSuccess,
+  sendTransferFailure,
   CONNECT_WALLET_REQUEST,
   CONNECT_WALLET_SUCCESS,
   SEND_TRANSFER_REQUEST,
-  SendTransferRequest
+  SendTransferRequestAction
 } from './actions'
 import { WindowWithEthereum } from './types'
-import { getAddress } from './selectors'
 
 interface HandleGetTokenBalanceAction extends Action, ITask { type: typeof CONNECT_WALLET_SUCCESS }
 
@@ -50,21 +50,22 @@ export const TOKEN_ABI = [
 export function* walletSaga() {
   yield takeEvery(CONNECT_WALLET_REQUEST, handleConnectWalletRequest)
   yield takeEvery<HandleGetTokenBalanceAction>(CONNECT_WALLET_SUCCESS, handleGetTokenBalance)
-  yield takeEvery<SendTransferRequest>(SEND_TRANSFER_REQUEST, handleSendTransferRequest)
+  yield takeEvery<SendTransferRequestAction>(SEND_TRANSFER_REQUEST, handleSendTransferRequest)
 }
 
-function* handleSendTransferRequest(action: SendTransferRequest) {
+function* handleSendTransferRequest(action: SendTransferRequestAction) {
   try {
     const provider = new ethers.providers.Web3Provider(
       windowWithEthereum.ethereum
     )
-    const token = new ethers.Contract(TOKEN_ADDRESS, TOKEN_ABI, provider)
-    const address: string = yield select(getAddress)
-    const balance: BigNumber = yield call(token.transfer, address, action.payload.receiverAddress)
-
-    yield put(getTokenBalanceSuccess(balance.toString()))
+    const signer = provider.getSigner()
+    const token = new ethers.Contract(TOKEN_ADDRESS, TOKEN_ABI, signer)
+    const { receiverAddress, amount } = action.payload
+    
+    yield call(token.transfer, receiverAddress, amount)
+    yield put(sendTransferSuccess())
   } catch (error: any) {
-    yield put(getTokenBalanceFailure(error))
+    yield put(sendTransferFailure(error))
   }
 }
 

@@ -17,7 +17,7 @@ const WalletDashboard = ({
   address,
   balance,
   error
-}: Props) => {
+}: Omit<Props, 'receiverAddress' | 'onSendTransfer'>) => {
   return <>
     {!isConnected ? (
     <>

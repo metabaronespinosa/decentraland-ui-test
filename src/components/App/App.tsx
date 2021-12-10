@@ -22,35 +22,34 @@ const App: React.FC<Props> = ({
   address,
   isConnected,
   onConnect,
+  onSendTransfer,
   isConnecting,
   balance,
   error
 }) => {
-  return (
-    <>
-      <Navbar />
-      <Page className="App">
-        <Center>
-          <Router>
-            <Routes>
-            <Route path='/transfer' element={<TransferForm />} />
-              <Route path='/' element={
-                <WalletDashboard
-                  address={address}
-                  isConnected={isConnected}
-                  onConnect={onConnect}
-                  isConnecting={isConnecting}
-                  balance={balance}
-                  error={error}
-                />
-              }/>
-            </Routes>
-          </Router>
-        </Center>
-      </Page>
-      <Footer />
-    </>
-  )
+  return <>
+    <Navbar />
+    <Page className="App">
+      <Center>
+        <Router>
+          <Routes>
+          <Route path='/transfer' element={<TransferForm onSendTransfer={onSendTransfer} />} />
+            <Route path='/' element={
+              <WalletDashboard
+                address={address}
+                isConnected={isConnected}
+                onConnect={onConnect}
+                isConnecting={isConnecting}
+                balance={balance}
+                error={error}
+              />
+            }/>
+          </Routes>
+        </Router>
+      </Center>
+    </Page>
+    <Footer />
+  </>
 }
 
 export default App

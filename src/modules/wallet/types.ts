@@ -5,6 +5,7 @@ export type WalletState = {
   isConnecting: boolean
   balance: string | null
   error: string | null
+  receiverAddress: string | null
 }
 
 export type WindowWithEthereum = Window & {

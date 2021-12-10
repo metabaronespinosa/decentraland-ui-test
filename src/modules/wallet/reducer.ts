@@ -3,10 +3,14 @@ import {
   ConnectWalletFailureAction,
   ConnectWalletSuccessAction,
   GetTokenBalanceSuccessAction,
+  SendTransferRequestAction,
   CONNECT_WALLET_FAILURE,
   CONNECT_WALLET_REQUEST,
   CONNECT_WALLET_SUCCESS,
-  GET_TOKEN_BALANCE_SUCCESS
+  GET_TOKEN_BALANCE_SUCCESS,
+  SEND_TRANSFER_REQUEST,
+  SEND_TRANSFER_SUCCESS,
+  SEND_TRANSFER_FAILURE
 } from './actions'
 import { WalletState } from './types'
 
@@ -14,7 +18,8 @@ const INITIAL_STATE: WalletState = {
   address: null,
   isConnecting: false,
   error: null,
-  balance: null
+  balance: null,
+  receiverAddress: null
 }
 
 export function walletReducer(
@@ -56,6 +61,30 @@ export function walletReducer(
       return {
         ...state,
         balance
+      }
+    }
+
+    // Actions related to transfer could live outside in another module, however will leave it here since it is a small app test
+    case SEND_TRANSFER_REQUEST: {
+      const { receiverAddress } =
+        action.payload as SendTransferRequestAction['payload']
+      return {
+        ...state,
+        receiverAddress
+      }
+    }
+
+    case SEND_TRANSFER_SUCCESS: {
+      return {
+        ...state,
+        receiverAddress: null
+      }
+    }
+
+    case SEND_TRANSFER_FAILURE: {
+      return {
+        ...state,
+        error: null
       }
     }
 
