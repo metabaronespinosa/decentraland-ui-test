@@ -9,8 +9,8 @@ export type Props = {
   isConnected: boolean
   isConnecting: boolean
   balance: string
+  loading: boolean
   error: string | null
-  receiverAddress: string | null
   onConnect: () => void
   onSendTransfer: (r: string, a: string) => void
 }
@@ -22,7 +22,7 @@ export type MapStateProps = Pick<
   'isConnecting' |
   'error' |
   'balance' |
-  'receiverAddress'
+  'loading'
 >
 export type MapDispatchProps = Pick<Props, 'onConnect' | 'onSendTransfer'>
 export type MapDispatch = Dispatch<ConnectWalletRequestAction | SendTransferRequestAction | AnyAction>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import {
   Close,
   Button,
@@ -11,10 +11,16 @@ import { Props } from '../App/App.types'
 
 import './styles.css'
 
-const TransferForm = ({ onSendTransfer }: Pick<Props, 'onSendTransfer'>) => {
+const TransferForm = ({
+  onSendTransfer,
+  loading,
+  error
+}: Pick<Props, 'onSendTransfer' | 'loading' | 'error'>) => {
   const [formValid, setFormValid] = useState(false)
   const [amount, setAmount] = useState<string | null>(null)
   const [address, setAddress] = useState<string | null>(null)
+  const prevLoading = useRef(false)
+
   const navigate = useNavigate()
 
   const handleAmountValue = (e: React.ChangeEvent<HTMLInputElement>) => setAmount(e.target.value)
@@ -27,6 +33,18 @@ const TransferForm = ({ onSendTransfer }: Pick<Props, 'onSendTransfer'>) => {
     // Ideally these values should be validated by Regex
     if (amount?.length && address?.length) setFormValid(true)
   }, [amount, address])
+
+  useEffect(() => {
+    if (
+      !loading &&
+      prevLoading.current &&
+      error === null
+    ) navigate('/') // Better handling for this could be a 'transferSuccessfull' property
+  }, [loading, error, navigate])
+
+  useEffect(() => {
+    prevLoading.current = loading
+  })
 
   return <>
     <Modal
@@ -46,6 +64,7 @@ const TransferForm = ({ onSendTransfer }: Pick<Props, 'onSendTransfer'>) => {
           primary
           disabled={!formValid}
           onClick={sendTransfer}
+          loading={loading}
         >
           Send
         </Button>

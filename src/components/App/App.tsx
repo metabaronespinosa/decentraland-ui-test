@@ -25,6 +25,7 @@ const App: React.FC<Props> = ({
   onSendTransfer,
   isConnecting,
   balance,
+  loading,
   error
 }) => {
   return <>
@@ -33,7 +34,12 @@ const App: React.FC<Props> = ({
       <Center>
         <Router>
           <Routes>
-          <Route path='/transfer' element={<TransferForm onSendTransfer={onSendTransfer} />} />
+          <Route path='/transfer' element={
+            <TransferForm
+              onSendTransfer={onSendTransfer}
+              loading={loading}
+              error={error}
+            />} />
             <Route path='/' element={
               <WalletDashboard
                 address={address}

@@ -19,7 +19,8 @@ const INITIAL_STATE: WalletState = {
   isConnecting: false,
   error: null,
   balance: null,
-  receiverAddress: null
+  receiverAddress: null,
+  loading: false
 }
 
 export function walletReducer(
@@ -70,6 +71,7 @@ export function walletReducer(
         action.payload as SendTransferRequestAction['payload']
       return {
         ...state,
+        loading: true,
         receiverAddress
       }
     }
@@ -77,6 +79,7 @@ export function walletReducer(
     case SEND_TRANSFER_SUCCESS: {
       return {
         ...state,
+        loading: false,
         receiverAddress: null
       }
     }
@@ -84,6 +87,7 @@ export function walletReducer(
     case SEND_TRANSFER_FAILURE: {
       return {
         ...state,
+        loading: false,
         error: null
       }
     }

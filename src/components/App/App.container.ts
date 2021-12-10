@@ -9,7 +9,8 @@ import {
   isConnected,
   isConnecting,
   getBalance,
-  getReceiverAddress
+  getReceiverAddress,
+  getLoading
 } from '../../modules/wallet/selectors'
 import { RootState } from '../../modules/types'
 import {
@@ -24,7 +25,7 @@ const mapState = (state: RootState): MapStateProps => ({
   isConnected: isConnected(state),
   isConnecting: isConnecting(state),
   balance: getBalance(state),
-  receiverAddress: getReceiverAddress(state),
+  loading: getLoading(state),
   error: getError(state),
 })
 
