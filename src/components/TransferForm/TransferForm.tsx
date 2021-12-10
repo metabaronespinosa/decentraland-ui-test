@@ -56,7 +56,7 @@ const TransferForm = ({
       <Modal.Header className='modal-header'>Transfer</Modal.Header>
       <Modal.Content className='modal-subtitle'>Send tokens to an account</Modal.Content>
       <Modal.Content>
-        <Field onChange={handleAmountValue} label='Amount' placeholder='0' />
+        <Field onChange={handleAmountValue} label='Amount' placeholder='$0' />
         <Field onChange={handleAddressValue} label='Address' placeholder='0x...' type='address' />
       </Modal.Content>
       <Modal.Actions>

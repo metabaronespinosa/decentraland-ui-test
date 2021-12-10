@@ -17,7 +17,6 @@ import { TransferForm } from '../TransferForm'
 
 import './App.css'
 
-
 const App: React.FC<Props> = ({
   address,
   isConnected,
